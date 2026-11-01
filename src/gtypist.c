@@ -1643,7 +1643,7 @@ FILE *open_script( const char *filename )
 int main( int argc, char **argv )
 {
   WINDOW *scr;                    /* curses standard screen - default window */
-  FILE *script;                         /* script file handle */
+  FILE *script = NULL;                  /* script file handle */
   char *p, filepath[FILENAME_MAX];      /* file paths */
   char script_file[FILENAME_MAX];       /* more file paths */
 
@@ -1781,9 +1781,25 @@ int main( int argc, char **argv )
         script = open_script( filepath );
     }
   } else {
+    /* look for the default script in GTYPIST_PATH first */
+    if( getenv( "GTYPIST_PATH" ) )
+    {
+      for ( p = strtok( getenv( "GTYPIST_PATH" ), ":" );
+            p != NULL; p = strtok( NULL, ":" ) )
+      {
+        snprintf( script_file, sizeof script_file, "%s/%s", p, DEFAULT_SCRIPT );
+        script = open_script( script_file );
+        if( script )
+          break;
+      }
+    }
+
     /* open default script */
-    sprintf( script_file, "%s/%s", DATADIR, DEFAULT_SCRIPT );
-    script = open_script( script_file );
+    if( !script )
+    {
+      sprintf( script_file, "%s/%s", DATADIR, DEFAULT_SCRIPT );
+      script = open_script( script_file );
+    }
   }
 
   /* check to make sure we open a script */
