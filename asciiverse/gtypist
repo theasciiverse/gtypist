@@ -1,0 +1,11 @@
+#!/bin/sh
+# Starts GNU Typist from an av install, with the lessons in lib/lessons:
+# `gtypist` opens the main English course, `gtypist esp.typ` (or any other
+# lesson file there) that lesson. Personal bests and settings stay where
+# upstream keeps them, ~/.gtypist-bestlog and ~/.gtypistrc.
+# av links ~/.local/bin/gtypist to this file, so follow that link first.
+self=$(readlink "$0" 2>/dev/null || printf '%s' "$0")
+dir=$(cd "$(dirname "$self")" && pwd)
+GTYPIST_PATH="$dir/lib/lessons${GTYPIST_PATH:+:$GTYPIST_PATH}"
+export GTYPIST_PATH
+exec "$dir/lib/gtypist" "$@"

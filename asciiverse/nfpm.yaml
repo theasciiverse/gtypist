@@ -1,0 +1,48 @@
+# System packages (.deb, .rpm, .apk, Arch) for GNU Typist, built by nfpm
+# from the same static Linux build as the av archive. The release workflow
+# sets VERSION, RELEASE (our packaging release) and ARCH (amd64 or arm64).
+#
+# The binary is configured for /usr, so it finds its lessons in
+# /usr/share/gtypist with no start script. No .desktop file on purpose:
+# av is the one place titles are started from.
+name: gtypist
+arch: ${ARCH}
+platform: linux
+version: ${VERSION}
+release: ${RELEASE}
+section: education
+priority: optional
+maintainer: Asciiverse <packages@asciiverse.sh>
+vendor: Asciiverse
+homepage: https://github.com/theasciiverse/gtypist
+license: GPL-3.0-or-later
+description: |
+  GNU Typist, the universal typing tutor.
+  Touch-typing lessons for QWERTY, Dvorak and Colemak, number pad and
+  speed drills, and lessons in several languages, in the terminal.
+  GNU Typist 2.10.1, packaged by Asciiverse.
+contents:
+  - src: src/gtypist
+    dst: /usr/bin/gtypist
+    file_info: { mode: 0755 }
+  - src: stage/lib/lessons
+    dst: /usr/share/gtypist
+    type: tree
+  - src: src/gtypist.1
+    dst: /usr/share/man/man1/gtypist.1
+    file_info: { mode: 0644 }
+  - src: doc/gtypist.info
+    dst: /usr/share/info/gtypist.info
+    file_info: { mode: 0644 }
+  - src: doc/gtypist.html
+    dst: /usr/share/doc/gtypist/gtypist.html
+    file_info: { mode: 0644 }
+  - src: COPYING
+    dst: /usr/share/doc/gtypist/copyright
+    file_info: { mode: 0644 }
+  - src: README
+    dst: /usr/share/doc/gtypist/README
+    file_info: { mode: 0644 }
+  - src: PATCHES.md
+    dst: /usr/share/doc/gtypist/PATCHES.md
+    file_info: { mode: 0644 }
