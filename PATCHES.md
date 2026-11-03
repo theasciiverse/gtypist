@@ -32,5 +32,7 @@ upstream.
   `GTYPIST_PATH`, so `gtypist esp.typ` and the like work.
 - Personal bests and settings stay where upstream keeps them:
   `~/.gtypist-bestlog` and `~/.gtypistrc`.
-- Linux builds are static (Alpine). On macOS the system's ncurses is
-  used, under the `ncursesw` names configure looks for.
+- Linux builds are static (Alpine). Alpine has the wide-character
+  `ncurses.h` only at the top of `/usr/include`, and on macOS the
+  system's ncurses is used; on both, `asciiverse/build.sh` puts them
+  under the `ncursesw` names configure looks for.

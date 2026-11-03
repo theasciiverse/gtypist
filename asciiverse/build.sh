@@ -19,7 +19,14 @@ find . -name Makefile.in -exec touch {} +
 
 if [ -f /etc/alpine-release ]; then
   apk add --no-cache build-base ncurses-dev ncurses-static >/dev/null
-  export LDFLAGS="-static"
+  # configure wants <ncursesw/ncurses.h>; Alpine's ncurses-dev has the
+  # wide-character ncurses.h only at the top of /usr/include, so name it.
+  # _GNU_SOURCE from the start: some files include <stdlib.h> before
+  # config.h defines it, and Alpine's fortify headers then miss mempcpy.
+  shim="$PWD/build/alpine-ncursesw"
+  mkdir -p "$shim/ncursesw"
+  printf '#include <ncurses.h>\n' > "$shim/ncursesw/ncurses.h"
+  export CPPFLAGS="-I$shim -DNCURSES_WIDECHAR=1 -D_GNU_SOURCE" LDFLAGS="-static"
 elif [ "$(uname)" = Darwin ]; then
   # configure wants <ncursesw/ncurses.h> and -lncursesw; macOS's ncurses
   # is wide-character capable under other names, so name them.

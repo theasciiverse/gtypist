@@ -7,7 +7,7 @@
 # For everyone else: .deb, .rpm, .apk and Arch packages from the same static
 # Linux build, made by nfpm (asciiverse/nfpm.yaml).
 #
-# Tags look like v2.10.1-av.1: upstream's version, then our packaging release.
+# Tags look like 2.10.1-av.2: upstream's version, then our packaging release.
 # Linux builds are fully static (Alpine); macOS builds both architectures on
 # one runner against the system's ncurses. No Windows build yet.
 
@@ -15,7 +15,7 @@ name: release
 
 on:
   push:
-    tags: ["v*"]
+    tags: ["*-av.*"]
   workflow_dispatch:
     inputs:
       tag:
